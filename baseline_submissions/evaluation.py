@@ -31,7 +31,8 @@ class NodeDetectionEvaluator:
             matching_participant_events = p_object[
                 (p_object['TimeIndex'] >= gt_row['TimeIndex'] - self.tolerance) &
                 (p_object['TimeIndex'] <= gt_row['TimeIndex'] + self.tolerance) &
-                (p_object['Direction'] == gt_row['Direction'])
+                (p_object['Direction'] == gt_row['Direction']) & 
+                (p_object['matched'] == False)
             ]
 
             if len(matching_participant_events) > 0:
@@ -62,7 +63,7 @@ class NodeDetectionEvaluator:
 
         return tp, fp, fn, gt_object, p_object
     
-    def score(self):
+    def score(self, debug=False):
         total_tp = 0
         total_fp = 0
         total_fn = 0
@@ -77,6 +78,12 @@ class NodeDetectionEvaluator:
             total_distances.extend(
                 p_object[p_object['classification'] == 'TP']['distance'].tolist()
             )
+        
+        if debug:
+            print(f"Total TPs: {total_tp}")
+            print(f"Total FPs: {total_fp}")
+            print(f"Total FNs: {total_fn}")
+            print(f"Total Distances: {total_distances}")
 
         precision = total_tp / (total_tp + total_fp) \
             if (total_tp + total_fp) != 0 else 0
@@ -203,8 +210,12 @@ def run_evaluator(ground_truth_path=None, participant_path=None, plot_object=Non
     
 
     # Create a NodeDetectionEvaluator instance
+    #print(f'Participant submission filepath: {participant_path}')
+    #print(f'Ground truth filepath: {ground_truth_path}')
+    #print(f'rows in participant: {len(participant_df)}')
+    #print(f'rows in ground truth: {len(ground_truth_df)}')  
     evaluator = NodeDetectionEvaluator(ground_truth_df, participant_df, tolerance=6)
-    precision, recall, f2, rmse = evaluator.score()
+    precision, recall, f2, rmse = evaluator.score(debug=True)
     print(f'Precision: {precision:.2f}')
     print(f'Recall: {recall:.2f}')
     print(f'F2: {f2:.2f}')
