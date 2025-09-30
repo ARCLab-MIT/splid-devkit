@@ -7,7 +7,7 @@ ______________________________________________________________________
 
 <p align="center">
   <a href="https://splid-devkit.readthedocs.io/en/latest/dataset.html">SPLID Dataset</a> •
-  <a href="https://splid-devkit.readthedocs.io/en/latest/metric.html">Metric</a> •
+  <a href="https://splid-devkit.readthedocs.io/en/latest/metric.html">Evaluation Metrics</a> •
   <a href="https://link.springer.com/article/10.1007/s40295-025-00515-5">Published Results</a> 
   
 </p>
